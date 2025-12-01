@@ -1,140 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Glacier Bookings</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #004aad;
-      margin-bottom: 20px;
-    }
-    #login-section, #dashboard {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    #login-section {
-      text-align: center;
-    }
-    input[type=password] {
-      padding: 10px;
-      width: 80%;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      background-color: #004aad;
-      color: white;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0066ff;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background-color: #004aad;
-      color: white;
-    }
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-  </style>
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Admin Dashboard</h1>
 
-  <div id="login-section">
-    <h3>Admin Login</h3>
-    <input type="password" id="adminKey" placeholder="Enter admin password" />
-    <br />
-    <button onclick="checkLogin()">Login</button>
-  </div>
+  <h2>Admin Login</h2>
 
-  <div id="dashboard" style="display: none;">
-    <h3>Booking Requests</h3>
-    <table id="bookingTable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Address</th>
-          <th>Service</th>
-          <th>Details</th>
-          <th>Created</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
 
-  <script>
-    async function checkLogin() {
-      const key = document.getElementById("adminKey").value.trim();
-      const correctKey = "admin"; // ✅ Set your admin password here
-
-      if (key === correctKey) {
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        loadBookings();
-      } else {
-        alert("Invalid password!");
-      }
-    }
-
-    async function loadBookings() {
-      try {
-        const res = await fetch("/api/admin/bookings", {
-          headers: { Authorization: "Bearer glacier_admin_2025" },
-        });
-        const data = await res.json();
-        const tbody = document.querySelector("#bookingTable tbody");
-        tbody.innerHTML = "";
-
-        data.forEach(b => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${b.id}</td>
-            <td>${b.name}</td>
-            <td>${b.email}</td>
-            <td>${b.phone}</td>
-            <td>${b.address}</td>
-            <td>${b.service}</td>
-            <td>${b.details || ""}</td>
-            <td>${new Date(b.createdAt).toLocaleString()}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      } catch (err) {
-        alert("Failed to load bookings.");
-        console.error(err);
-      }
-    }
-  </script>
+  <script src="admin.js"></script>
 </body>
 </html>

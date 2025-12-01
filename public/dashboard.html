@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2>Booking Requests</h2>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody id="bookings"></tbody>
+  </table>
+
+  <script>
+    async function loadData() {
+      try {
+        const res = await fetch("http://localhost:5000/api/bookings");
+        const data = await res.json();
+
+        let html = "";
+        data.forEach(b => {
+          html += `
+            <tr>
+              <td>${b.name}</td>
+              <td>${b.email}</td>
+              <td>${b.phone}</td>
+              <td>${b.address}</td>
+              <td>${b.message}</td>
+            </tr>
+          `;
+        });
+
+        document.getElementById("bookings").innerHTML = html;
+      } catch (err) {
+        alert("❌ Failed to load bookings");
+      }
+    }
+
+    loadData();
+  </script>
+
+</body>
+</html>
